@@ -12,7 +12,6 @@
             --primary: #4a90e2;
             --danger: #e74c3c;
             --success: #2ecc71;
-            --warning: #f39c12;
             --border: #ddd;
         }
 
@@ -55,7 +54,6 @@
         button:hover { opacity: 0.9; }
         button.danger { background-color: var(--danger); }
         button.success { background-color: var(--success); }
-        button.warning { background-color: var(--warning); color: #fff; }
 
         .form-group {
             display: flex;
@@ -105,7 +103,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             gap: 10px;
         }
 
@@ -116,28 +114,46 @@
             word-break: break-word;
         }
 
+        .map-link-title {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .map-link-title:hover {
+            text-decoration: underline;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .cost {
             color: var(--success);
             font-weight: bold;
             white-space: nowrap;
         }
 
+        .edit-btn {
+            background: none;
+            border: none;
+            color: #888;
+            padding: 2px 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .edit-btn:hover {
+            background: none;
+            opacity: 0.7;
+        }
+
         .description {
             font-size: 0.9rem;
             color: #666;
-            margin-bottom: 10px;
             word-break: break-word;
         }
-
-        .map-link {
-            display: inline-block;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .map-link:hover { text-decoration: underline; }
 
         .comments-section {
             border-top: 1px solid var(--border);
@@ -169,24 +185,34 @@
             font-size: 0.85rem;
         }
 
-        .card-actions {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 15px;
-            gap: 5px;
-        }
-        
-        .card-actions select, .card-actions button {
-            flex-grow: 1;
-            font-size: 0.85rem;
-            padding: 6px;
-        }
-
         /* Editing mode styles */
         .edit-input {
             width: 100%;
             box-sizing: border-box;
             margin-bottom: 10px;
+        }
+
+        .edit-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .edit-row select {
+            flex: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            gap: 5px;
+        }
+
+        .card-actions button {
+            flex-grow: 1;
+            font-size: 0.85rem;
+            padding: 6px;
         }
 
         #random-result {
@@ -203,34 +229,19 @@
 
         /* Mobile Responsive Rules */
         @media (max-width: 768px) {
-            .board {
-                grid-template-columns: 1fr; /* Stack columns vertically */
-            }
-            
-            .form-group {
-                flex-direction: column; /* Stack add form inputs vertically */
-            }
-            
-            .form-group input, 
-            .form-group select, 
-            .form-group button {
+            .board { grid-template-columns: 1fr; }
+            .form-group { flex-direction: column; }
+            .form-group input, .form-group select, .form-group button {
                 width: 100%;
                 box-sizing: border-box;
             }
-
             header {
                 flex-direction: column;
                 align-items: stretch;
                 text-align: center;
             }
-
-            .controls {
-                justify-content: center;
-            }
-            
-            .column {
-                min-height: auto; /* Allow columns to shrink on mobile */
-            }
+            .controls { justify-content: center; }
+            .column { min-height: auto; }
         }
     </style>
 </head>
@@ -279,9 +290,7 @@
     </div>
 
     <script>
-        // Initial Seed Data provided by user
         const initialData = [
-            // TO VISIT (SF & Oakland)
             { id: 1, name: "Sobakatsu", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
             { id: 2, name: "King Katsu", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
             { id: 3, name: "Chaa Roen Pohn", cost: "$$", description: "Laotian stuff", list: "to-visit", comments: [] },
@@ -308,7 +317,6 @@
             { id: 24, name: "Impressions of Langzhou", cost: "?", description: "Oakland/Berkeley", list: "to-visit", comments: [] },
             { id: 25, name: "Pintoh Thai", cost: "?", description: "Oakland/Berkeley", list: "to-visit", comments: [] },
 
-            // VISITED & GOOD
             { id: 26, name: "Hook Fish", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
             { id: 27, name: "Go Duck Yourself", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
             { id: 28, name: "Khao Tiew", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
@@ -359,7 +367,6 @@
             { id: 73, name: "Afghan Burrito", cost: "$", description: "Oakland/Berkeley", list: "visited", comments: [] },
             { id: 74, name: "June's Pizza", cost: "?", description: "Oakland/Berkeley", list: "visited", comments: [] },
 
-            // ORDER AHEAD
             { id: 75, name: "Braid Bakery", cost: "?", description: "Special Order", list: "order-ahead", comments: [] },
             { id: 76, name: "Butter & Crumble", cost: "?", description: "Special Order", list: "order-ahead", comments: [] },
             { id: 77, name: "Morechii", cost: "?", description: "mochi", list: "order-ahead", comments: [] },
@@ -368,20 +375,18 @@
             { id: 80, name: "Magical Donut", cost: "?", description: "Special Order", list: "order-ahead", comments: [] }
         ];
 
-        // State Management - Uses existing storage OR initial data if empty
         let restaurants = JSON.parse(localStorage.getItem('restaurants'));
         if (!restaurants || restaurants.length === 0) {
             restaurants = initialData;
         }
         
-        let editingId = null; // Tracks which card is currently being edited
+        let editingId = null;
 
         function saveState() {
             localStorage.setItem('restaurants', JSON.stringify(restaurants));
             render();
         }
 
-        // Render Function
         function render() {
             document.getElementById('list-to-visit').innerHTML = '';
             document.getElementById('list-visited').innerHTML = '';
@@ -394,10 +399,9 @@
                 card.className = 'card';
 
                 if (isEditing) {
-                    // --- EDIT MODE VIEW ---
                     card.innerHTML = `
-                        <div class="card-header">
-                            <h3 class="card-title">${rest.name}</h3>
+                        <input type="text" id="edit-name-${rest.id}" class="edit-input" style="font-weight:bold; font-size:1.1rem;" value="${rest.name}">
+                        <div class="edit-row">
                             <select id="edit-cost-${rest.id}">
                                 <option value="?" ${rest.cost === '?' ? 'selected' : ''}>?</option>
                                 <option value="$" ${rest.cost === '$' ? 'selected' : ''}>$</option>
@@ -405,22 +409,31 @@
                                 <option value="$$$" ${rest.cost === '$$$' ? 'selected' : ''}>$$$</option>
                                 <option value="$$$$" ${rest.cost === '$$$$' ? 'selected' : ''}>$$$$</option>
                             </select>
+                            <select id="edit-list-${rest.id}">
+                                <option value="to-visit" ${rest.list === 'to-visit' ? 'selected' : ''}>To Visit</option>
+                                <option value="visited" ${rest.list === 'visited' ? 'selected' : ''}>Visited & Good</option>
+                                <option value="order-ahead" ${rest.list === 'order-ahead' ? 'selected' : ''}>Order Ahead</option>
+                            </select>
                         </div>
                         <input type="text" id="edit-desc-${rest.id}" class="edit-input" value="${rest.description}" placeholder="Description">
                         <div class="card-actions">
                             <button class="success" onclick="saveEdit(${rest.id})">💾 Save</button>
                             <button onclick="cancelEdit()">❌ Cancel</button>
+                            <button class="danger" onclick="deleteRestaurant(${rest.id})">🗑️ Delete</button>
                         </div>
                     `;
                 } else {
-                    // --- NORMAL VIEW ---
                     card.innerHTML = `
                         <div class="card-header">
-                            <h3 class="card-title">${rest.name}</h3>
-                            <span class="cost">${rest.cost !== '?' ? rest.cost : ''}</span>
+                            <h3 class="card-title">
+                                <a href="https://www.google.com/maps/search/?api=1&query=$${mapQuery}" target="_blank" class="map-link-title">${rest.name}</a>
+                            </h3>
+                            <div class="header-right">
+                                <span class="cost">${rest.cost !== '?' ? rest.cost : ''}</span>
+                                <button class="edit-btn" onclick="startEdit(${rest.id})" title="Edit Restaurant">✏️</button>
+                            </div>
                         </div>
                         <div class="description">${rest.description}</div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=${mapQuery}" target="_blank" class="map-link">📍 View on Google Maps</a>
                         
                         <div class="comments-section">
                             ${rest.comments.map((c, i) => `
@@ -434,16 +447,6 @@
                                 <button onclick="addComment(${rest.id})">+</button>
                             </div>
                         </div>
-
-                        <div class="card-actions">
-                            <select onchange="moveList(${rest.id}, this.value)">
-                                <option value="to-visit" ${rest.list === 'to-visit' ? 'selected' : ''}>To Visit</option>
-                                <option value="visited" ${rest.list === 'visited' ? 'selected' : ''}>Visited & Good</option>
-                                <option value="order-ahead" ${rest.list === 'order-ahead' ? 'selected' : ''}>Order Ahead</option>
-                            </select>
-                            <button class="warning" onclick="startEdit(${rest.id})">✏️ Edit</button>
-                            <button class="danger" onclick="deleteRestaurant(${rest.id})">🗑️ Delete</button>
-                        </div>
                     `;
                 }
                 
@@ -451,7 +454,6 @@
             });
         }
 
-        // --- Core Actions ---
         function addRestaurant() {
             const name = document.getElementById('new-name').value;
             if (!name) return alert('Please enter a restaurant name.');
@@ -467,7 +469,6 @@
 
             restaurants.push(newRest);
             
-            // Clear form
             document.getElementById('new-name').value = '';
             document.getElementById('new-desc').value = '';
             
@@ -477,19 +478,11 @@
         function deleteRestaurant(id) {
             if (confirm('Are you sure you want to delete this restaurant?')) {
                 restaurants = restaurants.filter(r => r.id !== id);
+                editingId = null;
                 saveState();
             }
         }
 
-        function moveList(id, newList) {
-            const rest = restaurants.find(r => r.id === id);
-            if (rest) {
-                rest.list = newList;
-                saveState();
-            }
-        }
-
-        // --- Editing Features ---
         function startEdit(id) {
             editingId = id;
             render();
@@ -503,14 +496,15 @@
         function saveEdit(id) {
             const rest = restaurants.find(r => r.id === id);
             if (rest) {
+                rest.name = document.getElementById(`edit-name-${id}`).value;
                 rest.cost = document.getElementById(`edit-cost-${id}`).value;
+                rest.list = document.getElementById(`edit-list-${id}`).value;
                 rest.description = document.getElementById(`edit-desc-${id}`).value;
                 editingId = null;
                 saveState();
             }
         }
 
-        // --- Comment Features ---
         function handleCommentEnter(event, id) {
             if (event.key === 'Enter') addComment(id);
         }
@@ -535,7 +529,6 @@
             }
         }
 
-        // --- Random Picker ---
         function pickRandom() {
             const toVisit = restaurants.filter(r => r.list === 'to-visit');
             const resultDiv = document.getElementById('random-result');
@@ -553,7 +546,6 @@
             resultDiv.innerText = `You should go to: ${randomRest.name}!`;
         }
 
-        // Initial render on page load
         render();
     </script>
 </body>
