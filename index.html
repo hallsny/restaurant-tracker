@@ -279,8 +279,101 @@
     </div>
 
     <script>
-        // State Management
-        let restaurants = JSON.parse(localStorage.getItem('restaurants')) || [];
+        // Initial Seed Data provided by user
+        const initialData = [
+            // TO VISIT (SF & Oakland)
+            { id: 1, name: "Sobakatsu", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 2, name: "King Katsu", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 3, name: "Chaa Roen Pohn", cost: "$$", description: "Laotian stuff", list: "to-visit", comments: [] },
+            { id: 4, name: "Niku Butcher Shop Burger", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 5, name: "Sung Ho", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 6, name: "Al Pastor Papi", cost: "$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 7, name: "Copra", cost: "$$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 8, name: "Koolfi Creamery", cost: "$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 9, name: "Wild Fox Cafe", cost: "$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 10, name: "Firefly", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 11, name: "Zitoua", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 12, name: "Taste of Old Street", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 13, name: "Trick Dog", cost: "$", description: "Veggie Hot Dog", list: "to-visit", comments: [] },
+            { id: 14, name: "Paprika", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 15, name: "Komaaj Pila Bazaar", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 16, name: "PAUL IS GOING TO CHOOSE A CLAY POT RESTAURANT", cost: "?", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 17, name: "Shizen", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 18, name: "Joodooboo", cost: "?", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 19, name: "Kayma Algerian", cost: "$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 20, name: "Mr. Pollo", cost: "$$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 21, name: "Chicken Fried Palace", cost: "$$", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 22, name: "Freekeh", cost: "$$", description: "Lentil soup", list: "to-visit", comments: [] },
+            { id: 23, name: "Haraz coffee", cost: "?", description: "San Francisco", list: "to-visit", comments: [] },
+            { id: 24, name: "Impressions of Langzhou", cost: "?", description: "Oakland/Berkeley", list: "to-visit", comments: [] },
+            { id: 25, name: "Pintoh Thai", cost: "?", description: "Oakland/Berkeley", list: "to-visit", comments: [] },
+
+            // VISITED & GOOD
+            { id: 26, name: "Hook Fish", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 27, name: "Go Duck Yourself", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 28, name: "Khao Tiew", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 29, name: "Katsuo & Kombu", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 30, name: "Koji Kitchen", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 31, name: "Todayfood", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 32, name: "Yo Tambien", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 33, name: "Rintaro", cost: "$$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 34, name: "Studio Aurora", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 35, name: "Good 2 Eat", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 36, name: "Chicha San Chen", cost: "$", description: "taro ball", list: "visited", comments: [] },
+            { id: 37, name: "Beit Rima", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 38, name: "Lai Hong Lounge", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 39, name: "Terra Cotta Warrior", cost: "$", description: "cumin noodles", list: "visited", comments: [] },
+            { id: 40, name: "Yuanbao Jaozi", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 41, name: "Philmore Creamery", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 42, name: "Komeya No Bento", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 43, name: "Manna", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 44, name: "Prik Hom", cost: "$$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 45, name: "Brother's Restaurant", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 46, name: "Outta Sight Pizza", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 47, name: "New Eritrea", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 48, name: "Lucinda's", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 49, name: "San Ho Won", cost: "$$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 50, name: "Ju Ni", cost: "$$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 51, name: "Earnest", cost: "$$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 52, name: "Pasta Supply Co", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 53, name: "Pizetta Napoletana", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 54, name: "Cellarmaker", cost: "$", description: "Detroit Style Pizza", list: "visited", comments: [] },
+            { id: 55, name: "Mong Thu", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 56, name: "Papa Noodle", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 57, name: "Estrellita's Snacks", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 58, name: "Aji Kiji", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 59, name: "Gumbo Social", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 60, name: "Breadbelly", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 61, name: "Viet Quan Vietnamese Noodle House", cost: "$", description: "Hanoi Noodles", list: "visited", comments: [] },
+            { id: 62, name: "Kahnfections", cost: "$", description: "Biscuit sandwich", list: "visited", comments: [] },
+            { id: 63, name: "Devil's Teeth", cost: "$", description: "Breakfast Sandwich", list: "visited", comments: [] },
+            { id: 64, name: "Pizzetta 211", cost: "$", description: "Date night!", list: "visited", comments: [] },
+            { id: 65, name: "Ushi Taro", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 66, name: "Rabbit Hole", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 67, name: "Rasa Rasa Kitchen", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 68, name: "Sawaan Thai Food", cost: "$$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 69, name: "Sanguchon", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 70, name: "Taniku Izakaya", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 71, name: "Ebiko", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 72, name: "Juniper", cost: "$", description: "San Francisco", list: "visited", comments: [] },
+            { id: 73, name: "Afghan Burrito", cost: "$", description: "Oakland/Berkeley", list: "visited", comments: [] },
+            { id: 74, name: "June's Pizza", cost: "?", description: "Oakland/Berkeley", list: "visited", comments: [] },
+
+            // ORDER AHEAD
+            { id: 75, name: "Braid Bakery", cost: "?", description: "Special Order", list: "order-ahead", comments: [] },
+            { id: 76, name: "Butter & Crumble", cost: "?", description: "Special Order", list: "order-ahead", comments: [] },
+            { id: 77, name: "Morechii", cost: "?", description: "mochi", list: "order-ahead", comments: [] },
+            { id: 78, name: "Baklavastory", cost: "?", description: "Special Order", list: "order-ahead", comments: [] },
+            { id: 79, name: "El Buen Comer Noe Valley Farmers Market Tamales", cost: "?", description: "Special Order", list: "order-ahead", comments: [] },
+            { id: 80, name: "Magical Donut", cost: "?", description: "Special Order", list: "order-ahead", comments: [] }
+        ];
+
+        // State Management - Uses existing storage OR initial data if empty
+        let restaurants = JSON.parse(localStorage.getItem('restaurants'));
+        if (!restaurants || restaurants.length === 0) {
+            restaurants = initialData;
+        }
+        
         let editingId = null; // Tracks which card is currently being edited
 
         function saveState() {
@@ -324,144 +417,4 @@
                     card.innerHTML = `
                         <div class="card-header">
                             <h3 class="card-title">${rest.name}</h3>
-                            <span class="cost">${rest.cost !== '?' ? rest.cost : ''}</span>
-                        </div>
-                        <div class="description">${rest.description}</div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=${mapQuery}" target="_blank" class="map-link">📍 View on Google Maps</a>
-                        
-                        <div class="comments-section">
-                            ${rest.comments.map((c, i) => `
-                                <div class="comment">
-                                    <span>💬 ${c}</span>
-                                    <button style="padding:2px 6px; font-size:10px;" class="danger" onclick="deleteComment(${rest.id}, ${i})">X</button>
-                                </div>
-                            `).join('')}
-                            <div class="add-comment">
-                                <input type="text" id="comment-input-${rest.id}" placeholder="Add comment..." onkeypress="handleCommentEnter(event, ${rest.id})">
-                                <button onclick="addComment(${rest.id})">+</button>
-                            </div>
-                        </div>
-
-                        <div class="card-actions">
-                            <select onchange="moveList(${rest.id}, this.value)">
-                                <option value="to-visit" ${rest.list === 'to-visit' ? 'selected' : ''}>To Visit</option>
-                                <option value="visited" ${rest.list === 'visited' ? 'selected' : ''}>Visited & Good</option>
-                                <option value="order-ahead" ${rest.list === 'order-ahead' ? 'selected' : ''}>Order Ahead</option>
-                            </select>
-                            <button class="warning" onclick="startEdit(${rest.id})">✏️ Edit</button>
-                            <button class="danger" onclick="deleteRestaurant(${rest.id})">🗑️ Delete</button>
-                        </div>
-                    `;
-                }
-                
-                document.getElementById(`list-${rest.list}`).appendChild(card);
-            });
-        }
-
-        // --- Core Actions ---
-        function addRestaurant() {
-            const name = document.getElementById('new-name').value;
-            if (!name) return alert('Please enter a restaurant name.');
-
-            const newRest = {
-                id: Date.now(),
-                name: name,
-                cost: document.getElementById('new-cost').value,
-                description: document.getElementById('new-desc').value,
-                list: document.getElementById('new-list').value,
-                comments: []
-            };
-
-            restaurants.push(newRest);
-            
-            // Clear form
-            document.getElementById('new-name').value = '';
-            document.getElementById('new-desc').value = '';
-            
-            saveState();
-        }
-
-        function deleteRestaurant(id) {
-            if (confirm('Are you sure you want to delete this restaurant?')) {
-                restaurants = restaurants.filter(r => r.id !== id);
-                saveState();
-            }
-        }
-
-        function moveList(id, newList) {
-            const rest = restaurants.find(r => r.id === id);
-            if (rest) {
-                rest.list = newList;
-                saveState();
-            }
-        }
-
-        // --- Editing Features ---
-        function startEdit(id) {
-            editingId = id;
-            render();
-        }
-
-        function cancelEdit() {
-            editingId = null;
-            render();
-        }
-
-        function saveEdit(id) {
-            const rest = restaurants.find(r => r.id === id);
-            if (rest) {
-                rest.cost = document.getElementById(`edit-cost-${id}`).value;
-                rest.description = document.getElementById(`edit-desc-${id}`).value;
-                editingId = null;
-                saveState();
-            }
-        }
-
-        // --- Comment Features ---
-        function handleCommentEnter(event, id) {
-            if (event.key === 'Enter') addComment(id);
-        }
-
-        function addComment(id) {
-            const input = document.getElementById(`comment-input-${id}`);
-            const text = input.value.trim();
-            if (!text) return;
-
-            const rest = restaurants.find(r => r.id === id);
-            if (rest) {
-                rest.comments.push(text);
-                saveState();
-            }
-        }
-
-        function deleteComment(restId, commentIndex) {
-            const rest = restaurants.find(r => r.id === restId);
-            if (rest) {
-                rest.comments.splice(commentIndex, 1);
-                saveState();
-            }
-        }
-
-        // --- Random Picker ---
-        function pickRandom() {
-            const toVisit = restaurants.filter(r => r.list === 'to-visit');
-            const resultDiv = document.getElementById('random-result');
-            
-            if (toVisit.length === 0) {
-                resultDiv.style.display = 'block';
-                resultDiv.style.backgroundColor = 'var(--danger)';
-                resultDiv.innerText = "No restaurants left in your 'To Visit' list!";
-                return;
-            }
-
-            const randomRest = toVisit[Math.floor(Math.random() * toVisit.length)];
-            resultDiv.style.display = 'block';
-            resultDiv.style.backgroundColor = 'var(--success)';
-            resultDiv.innerText = `You should go to: ${randomRest.name}!`;
-        }
-
-        // Initial render on page load
-        render();
-    </script>
-</body>
-</html>
+                            <span class="cost">${rest.cos
